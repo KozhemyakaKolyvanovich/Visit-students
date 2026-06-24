@@ -1,0 +1,149 @@
+// src/components/ui/Spinner/Spinner.module.scss
+
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+.spinnerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+// ===== КОЛЕСО МАХОРАГИ =====
+.mahoragaWheel {
+  position: relative;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  animation: spin 3s linear infinite;
+}
+
+// Внешний обод
+.outerRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid;
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+// Среднее кольцо
+.middleRing {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid;
+  animation: pulseMiddle 1.5s ease-in-out infinite;
+}
+
+// Центральный круг
+.centerCircle {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 3;
+  animation: pulseCenter 1.8s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(83, 215, 91, 0.3);
+}
+
+// Круги на концах лучей
+.endCircle {
+  position: absolute;
+  z-index: 2;
+  animation: pulseEnd 1.8s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(83, 215, 91, 0.2);
+
+  &:nth-child(1) { animation-delay: 0s; }
+  &:nth-child(2) { animation-delay: 0.225s; }
+  &:nth-child(3) { animation-delay: 0.45s; }
+  &:nth-child(4) { animation-delay: 0.675s; }
+  &:nth-child(5) { animation-delay: 0.9s; }
+  &:nth-child(6) { animation-delay: 1.125s; }
+  &:nth-child(7) { animation-delay: 1.35s; }
+  &:nth-child(8) { animation-delay: 1.575s; }
+}
+
+// Вращающийся элемент (делает колесо динамичным)
+.rotationElement {
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: spinReverse 2s linear infinite;
+  z-index: 1;
+}
+
+// Лучи (спицы)
+.ray {
+  position: absolute;
+  z-index: 1;
+  border-radius: 2px;
+  transform-origin: left center;
+  animation: pulseRay 2s ease-in-out infinite;
+
+  &:nth-child(1) { animation-delay: 0s; }
+  &:nth-child(2) { animation-delay: 0.25s; }
+  &:nth-child(3) { animation-delay: 0.5s; }
+  &:nth-child(4) { animation-delay: 0.75s; }
+  &:nth-child(5) { animation-delay: 1s; }
+  &:nth-child(6) { animation-delay: 1.25s; }
+  &:nth-child(7) { animation-delay: 1.5s; }
+  &:nth-child(8) { animation-delay: 1.75s; }
+}
+
+// ===== ТЕКСТ =====
+.spinnerText {
+  font-family: var(--font-family-geologica);
+  font-size: 16px;
+  color: var(--beh-text);
+  animation: pulseText 1.5s ease-in-out infinite;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+// ===== АНИМАЦИИ =====
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.05); opacity: 0.25; }
+}
+
+@keyframes pulseMiddle {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.08); opacity: 0.7; }
+}
+
+@keyframes pulseCenter {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.12); opacity: 1; }
+}
+
+@keyframes pulseEnd {
+  0%, 100% { transform: translate(var(--x), var(--y)) scale(1); opacity: 0.8; }
+  50% { transform: translate(var(--x), var(--y)) scale(1.2); opacity: 1; }
+}
+
+@keyframes pulseRay {
+  0%, 100% { opacity: 0.4; transform: rotate(var(--angle)) scaleX(1); }
+  50% { opacity: 0.8; transform: rotate(var(--angle)) scaleX(1.1); }
+}
+
+@keyframes pulseText {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}

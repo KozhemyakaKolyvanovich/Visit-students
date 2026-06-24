@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import LipShapka from '../../layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from './mainStudents.module.scss';
+import Spinner from '../../ui/Spinner/Spinner'; // ← ИМПОРТ СПИННЕРА
 
 interface Discipline {
   id: number;
@@ -16,68 +17,92 @@ interface Discipline {
 const MainStudents: React.FC = () => {
   const navigate = useNavigate();
 
-  // ===== СОСТОЯНИЕ ДЛЯ ИМЕНИ =====
+  // ===== СОСТОЯНИЯ =====
   const [userName, setUserName] = useState<string>('Студент');
-
-  // ===== СОСТОЯНИЕ ДЛЯ ВЫДЕЛЕНИЯ КАРТОЧКИ =====
   const [selectedDiscipline, setSelectedDiscipline] = useState<number | null>(null);
+  const [disciplines, setDisciplines] = useState<Discipline[]>([]); // ← состояние для дисциплин
+  const [loading, setLoading] = useState<boolean>(true); // ← состояние загрузки
 
-  // ===== ЗАГРУЖАЕМ ИМЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ =====
+  // ===== ЗАГРУЖАЕМ ИМЯ И ДИСЦИПЛИНЫ =====
   useEffect(() => {
-    const user = getUser();
-    if (user) {
-      setUserName(user.fullName);
-    }
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // 1. Загружаем имя пользователя
+        const user = getUser();
+        if (user) {
+          setUserName(user.fullName);
+        }
+
+        // 2. Загружаем дисциплины из базы
+        // (пока закомментировано, так как у вас временные данные)
+        // const response = await fetch('/api/disciplines?groupId=1');
+        // const data = await response.json();
+        // setDisciplines(data);
+
+        // Временные данные (пока нет API)
+        const mockDisciplines: Discipline[] = [
+          {
+            id: 1,
+            name: 'Веб-разработка',
+            teacher: 'Михаил Скляров',
+            icon: '🌐',
+            color: '#4A90D9',
+          },
+          {
+            id: 2,
+            name: 'Базы данных',
+            teacher: 'Татьяна Александровна',
+            icon: '🗄️',
+            color: '#27AE60',
+          },
+          {
+            id: 3,
+            name: 'Программирование',
+            teacher: 'Дмитрий Граков',
+            icon: '💻',
+            color: '#E67E22',
+          },
+          {
+            id: 4,
+            name: 'Дизайн интерфейсов',
+            teacher: 'Михаил Скляров',
+            icon: '🎨',
+            color: '#8E44AD',
+          },
+          {
+            id: 5,
+            name: 'Jujutsu Kaisen (Modulo)',
+            teacher: 'Dabura Karaba',
+            icon: '📚',
+            color: '#E74C3C',
+          },
+        ];
+
+        // Имитация задержки загрузки
+        await new Promise(resolve => setTimeout(resolve, 800));
+        setDisciplines(mockDisciplines);
+
+      } catch (error) {
+        console.error('Ошибка загрузки:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  // Временные данные дисциплин
-  const disciplines: Discipline[] = [
-    {
-      id: 1,
-      name: 'Веб-разработка',
-      teacher: 'Михаил Скляров',
-      icon: '🌐',
-      color: '#4A90D9',
-    },
-    {
-      id: 2,
-      name: 'Базы данных',
-      teacher: 'Татьяна Александровна',
-      icon: '🗄️',
-      color: '#27AE60',
-    },
-    {
-      id: 3,
-      name: 'Программирование',
-      teacher: 'Дмитрий Граков',
-      icon: '💻',
-      color: '#E67E22',
-    },
-    {
-      id: 4,
-      name: 'Дизайн интерфейсов',
-      teacher: 'Михаил Скляров',
-      icon: '🎨',
-      color: '#8E44AD',
-    },
-    {
-      id: 5,
-      name: 'Jujutsu Kaisen (Modulo)',
-      teacher: 'Dabura Karaba',
-      icon: '📚',
-      color: '#E74C3C',
-    },
-  ];
-
-  // ===== ОБРАБОТЧИК КЛИКА ПО ДИСЦИПЛИНЕ =====
+  // ===== ОБРАБОТЧИК КЛИКА =====
   const handleDisciplineClick = (id: number) => {
-    setSelectedDiscipline(id); // ← выделяем карточку (теперь используется!)
+    setSelectedDiscipline(id);
     setTimeout(() => {
       navigate(`/student/discipline/${id}`);
     }, 300);
   };
 
-  // ===== ВЫХОД ИЗ СИСТЕМЫ =====
+  // ===== ВЫХОД =====
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -85,6 +110,19 @@ const MainStudents: React.FC = () => {
     window.location.href = '/login';
   };
 
+  // ===== ПОКАЗЫВАЕМ СПИННЕР ПОКА ЗАГРУЖАЮТСЯ ДАННЫЕ =====
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <LipShapka userName={userName} onLogout={handleLogout} />
+        <div className={styles.loadingState}>
+          <Spinner size="large" text="Загрузка дисциплин..." />
+        </div>
+      </div>
+    );
+  }
+
+  // ===== ОСНОВНОЙ РЕНДЕР =====
   return (
     <div className={styles.page}>
       <LipShapka 

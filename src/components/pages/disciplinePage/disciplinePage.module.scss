@@ -331,15 +331,7 @@
   }
   
   // ===== ЗАГРУЗКА =====
-  .loadingContainer {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--beh-text);
-    font-size: 18px;
-    font-family: var(--font-family-geologica);
-  }
+
   
   // ===== АДАПТИВ =====
   @media (max-width: 1024px) {

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import LipShapka from '../../../components/layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from './mainTeacher.module.scss';
+import Spinner from '../../ui/Spinner/Spinner'
 
 interface Group {
   id: number;
@@ -127,7 +128,7 @@ const MainTeacher: React.FC = () => {
 
           {loading && (
             <div className={styles.loadingState}>
-              <p>Загрузка данных...</p>
+              <Spinner size="medium" text="Загрузка групп..." /> {/* ← НОВЫЙ СПИННЕР */}
             </div>
           )}
 

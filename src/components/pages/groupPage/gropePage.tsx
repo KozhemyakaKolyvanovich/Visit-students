@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import LipShapka from '../../layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from '../groupPage/gropePage.module.scss';
+import Spinner from '../../ui/Spinner/Spinner';
 
 // ===== ТИПЫ =====
 interface Student {
@@ -295,9 +296,7 @@ const GroupPage: React.FC = () => {
     return (
       <div className={styles.page}>
         <LipShapka userName={user?.fullName || 'Преподаватель'} onLogout={handleLogout} />
-        <div className={styles.loadingContainer}>
-          <p>Загрузка данных...</p>
-        </div>
+        <Spinner size="large" text="Загрузка группы..." /> {/* ← НОВЫЙ СПИННЕР */}
       </div>
     );
   }

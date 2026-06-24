@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import LipShapka from '../../../components/layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from './disciplinePage.module.scss';
-
+import Spinner from '../../ui/Spinner/Spinner';
 // ===== ТИПЫ =====
 interface Discipline {
   id: number;
@@ -211,10 +211,7 @@ const DisciplinePage: React.FC = () => {
     return (
       <div className={styles.page}>
         <LipShapka userName={user?.fullName || 'Студент'} onLogout={handleLogout} />
-        <div className={styles.loadingContainer}>
-          <div className={styles.loadingSpinner}></div>
-          <p>Загрузка данных...</p>
-        </div>
+        <Spinner size="large" text="Загрузка дисциплины..." /> {/* ← НОВЫЙ СПИННЕР */}
       </div>
     );
   }

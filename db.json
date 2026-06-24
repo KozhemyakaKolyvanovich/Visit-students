@@ -296,6 +296,38 @@
       "status": "P",
       "reason": "",
       "id": "nBvm6DkG4vg"
+    },
+    {
+      "studentId": 8,
+      "disciplineId": "1",
+      "date": "2026-06-23",
+      "status": "Оп",
+      "reason": "",
+      "id": "3dDQCn3xuIs"
+    },
+    {
+      "studentId": 8,
+      "disciplineId": 3,
+      "date": "2026-06-23",
+      "status": "Б",
+      "reason": "",
+      "id": "A9Ui5dxRCsU"
+    },
+    {
+      "studentId": 8,
+      "disciplineId": 2,
+      "date": "2026-06-23",
+      "status": "Б",
+      "reason": "",
+      "id": "SNQ66JNYN2M"
+    },
+    {
+      "studentId": 8,
+      "disciplineId": 6,
+      "date": "2026-06-23",
+      "status": "N",
+      "reason": "прогулял",
+      "id": "-fft5-jdvOA"
     }
   ],
   "polls": [],
