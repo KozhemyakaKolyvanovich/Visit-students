@@ -1,0 +1,104 @@
+// src/components/pages/login/Login.module.scss
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--ramka);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.form {
+  width: min(994px, 90vw);
+  height: 100vh;
+  max-height: 100vh;
+  background: var(--fon);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px var(--shadow);
+  border: 1px solid var(--ramka);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 40px clamp(40px, 8vw, 100px);
+
+  padding-bottom: 60px; 
+}
+
+// ===== ЛОГОТИП =====
+.logo {
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  img {
+    height: clamp(336px, 100vh, 120px);
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+}
+
+// ===== ЗАГОЛОВОК =====
+.title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--text);
+  font-family: var(--font-family-geologica);
+  text-align: center;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+// ===== КОММЕНТАРИЙ =====
+.comment {
+  font-size: clamp(16px, 2vw, 24px);
+  font-style: italic;
+  font-family: var(--font-family-geologica);
+  text-align: center;
+  color: var(--present);
+  margin-bottom: 40px;
+  flex-shrink: 0;
+}
+
+// ===== КОНТЕЙНЕР ДЛЯ ПОЛЕЙ =====
+.fieldsContainer {
+  width: 100%;
+  max-width: 764px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+
+  margin-bottom: 10px;
+}
+
+// ===== РАСШИРИТЕЛЬ =====
+.spacer {
+  flex: 0.6;  // ← уменьшил с 1 до 0.6, чтобы поднять элементы
+  min-height: 5px;
+}
+//ошибка
+.error {
+  color: var(--no-show);
+  font-size: 18px;
+  margin-bottom: 16px;
+  padding: 12px 20px;
+  background: rgba(200, 60, 52, 0.15);
+  border: 1px solid var(--no-show);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 764px;
+  text-align: center;
+  font-family: var(--font-family-geologica);
+}
