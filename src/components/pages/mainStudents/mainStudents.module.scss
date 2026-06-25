@@ -340,4 +340,282 @@
     .welcomeTitle {
       font-size: 20px;
     }
+    // src/pages/mainStudents/mainStudents.module.scss
+
+// ===== БАННЕР ОПРОСА =====
+.pollBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, #1E3A8A, #0F172A);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15);
+  animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pollInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pollIcon {
+  font-size: 28px;
+}
+
+.pollTitle {
+  font-size: 16px;
+  color: #E2E8F0;
+  font-family: var(--font-family-geologica);
+  margin: 0;
+}
+
+.pollTitle strong {
+  color: #60A5FA;
+}
+
+.pollTimer {
+  font-size: 14px;
+  color: #94A3B8;
+  font-family: var(--font-family-geologica);
+  margin: 4px 0 0 0;
+}
+
+.timerValue {
+  color: #FCD34D;
+  font-weight: 700;
+}
+
+.pollMarkButton {
+  padding: 10px 28px;
+  background: linear-gradient(135deg, #3B82F6, #60A5FA);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-family-geologica);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.pollMarkButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+}
+
+.pollMarkButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.pollMarkButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// ===== УСПЕШНАЯ ОТМЕТКА =====
+.pollSuccessBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  animation: slideDown 0.5s ease;
+}
+
+.pollSuccessIcon {
+  font-size: 24px;
+}
+
+.pollSuccessText {
+  font-size: 15px;
+  color: #E2E8F0;
+  font-family: var(--font-family-geologica);
+  margin: 0;
+}
+
+.pollSuccessText strong {
+  color: #34D399;
+}
+
+@media (max-width: 768px) {
+  .pollBanner {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .pollInfo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .pollMarkButton {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .pollTitle {
+    font-size: 14px;
+  }
+}
+// src/pages/mainStudents/mainStudents.module.scss
+
+// ===== БАННЕР ОПРОСА =====
+.pollBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background: linear-gradient(135deg, #1E3A8A, #0F172A);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15);
+  animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pollInfo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pollIcon {
+  font-size: 28px;
+}
+
+.pollTitle {
+  font-size: 16px;
+  color: #E2E8F0;
+  font-family: var(--font-family-geologica);
+  margin: 0;
+}
+
+.pollTitle strong {
+  color: #60A5FA;
+}
+
+.pollTimer {
+  font-size: 14px;
+  color: #94A3B8;
+  font-family: var(--font-family-geologica);
+  margin: 4px 0 0 0;
+}
+
+.timerValue {
+  color: #FCD34D;
+  font-weight: 700;
+}
+
+.pollMarkButton {
+  padding: 10px 28px;
+  background: linear-gradient(135deg, #3B82F6, #60A5FA);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-family-geologica);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+}
+
+.pollMarkButton:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.4);
+}
+
+.pollMarkButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.pollMarkButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+// ===== УСПЕШНАЯ ОТМЕТКА =====
+.pollSuccessBanner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+  animation: slideDown 0.5s ease;
+}
+
+.pollSuccessIcon {
+  font-size: 24px;
+}
+
+.pollSuccessText {
+  font-size: 15px;
+  color: #E2E8F0;
+  font-family: var(--font-family-geologica);
+  margin: 0;
+}
+
+.pollSuccessText strong {
+  color: #34D399;
+}
+
+@media (max-width: 768px) {
+  .pollBanner {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .pollInfo {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .pollMarkButton {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .pollTitle {
+    font-size: 14px;
+  }
+}
   }

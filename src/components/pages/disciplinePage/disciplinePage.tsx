@@ -5,6 +5,8 @@ import LipShapka from '../../../components/layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from './disciplinePage.module.scss';
 import Spinner from '../../ui/Spinner/Spinner';
+import { generateReport } from '../../../services/reportService';
+
 // ===== ТИПЫ =====
 interface Discipline {
   id: number;
@@ -17,7 +19,7 @@ interface AttendanceRecord {
   studentId: number;
   disciplineId: number;
   date: string;
-  status: 'P' | 'N' | 'Б' | 'Оп' | '';
+  status: 'П' | 'Н' | 'Б' | 'Оп' | ''; // ← ИСПРАВЛЕНО
   reason: string;
 }
 
@@ -47,7 +49,7 @@ const DisciplinePage: React.FC = () => {
   const [selectedMonth, setSelectedMonth] = useState<string>(new Date().toISOString().slice(0, 7));
 
   const tableRef = useRef<HTMLDivElement>(null);
-  const isFirstRender = useRef(true); // ← добавляем флаг
+  const isFirstRender = useRef(true);
 
   // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
   function getCurrentWeekStart(): string {
@@ -131,8 +133,8 @@ const DisciplinePage: React.FC = () => {
     );
 
     return {
-      present: records.filter(r => r.status === 'P').length,
-      absent: records.filter(r => r.status === 'N').length,
+      present: records.filter(r => r.status === 'П').length, // ← ИСПРАВЛЕНО
+      absent: records.filter(r => r.status === 'Н').length, // ← ИСПРАВЛЕНО
       sick: records.filter(r => r.status === 'Б').length,
       late: records.filter(r => r.status === 'Оп').length,
       total: records.length,
@@ -145,13 +147,11 @@ const DisciplinePage: React.FC = () => {
       try {
         setLoading(true);
 
-        // 1. Загружаем дисциплину
         const disciplineRes = await fetch(`/api/disciplines/${disciplineId}`);
         const disciplineData = await disciplineRes.json();
         setDiscipline(disciplineData);
         console.log('📦 Дисциплина:', disciplineData);
 
-        // 2. Загружаем данные студента
         if (user) {
           const studentRes = await fetch(`/api/students/${user.id}`);
           const studentData = await studentRes.json();
@@ -159,7 +159,6 @@ const DisciplinePage: React.FC = () => {
           console.log('📦 Студент:', studentData);
         }
 
-        // 3. Загружаем все записи посещаемости
         const attendanceRes = await fetch('/api/attendance');
         const attendanceData = await attendanceRes.json();
         setAttendance(attendanceData);
@@ -189,6 +188,37 @@ const DisciplinePage: React.FC = () => {
   const dates = getDates();
   const stats = getStats();
 
+  // ===== ФУНКЦИЯ СКАЧИВАНИЯ ОТЧЁТА =====
+  const handleDownloadReport = async () => {
+    if (!student || !discipline) {
+      alert('Данные для отчёта не загружены');
+      return;
+    }
+
+    const statuses = dates.map(date => getStatusForDate(date));
+    const comments = dates.map(date => getReasonForDate(date));
+
+    const reportData = {
+      title: 'Отчёт по посещаемости',
+      studentName: student.fullName,
+      disciplineName: discipline.name,
+      period: period === 'daily' ? `День: ${formatDate(selectedDate)}` :
+              period === 'weekly' ? `Неделя: ${getWeekRange(selectedWeek)}` :
+              `Месяц: ${formatMonth(selectedMonth)}`,
+      dates: dates.map(date => formatDate(date)),
+      statuses: statuses,
+      comments: comments,
+      stats: stats,
+    };
+
+    try {
+      await generateReport(reportData);
+    } catch (error) {
+      console.error('Ошибка при скачивании отчёта:', error);
+      alert('Не удалось скачать отчёт. Попробуйте ещё раз.');
+    }
+  };
+
   // ===== ВЫХОД =====
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -197,26 +227,24 @@ const DisciplinePage: React.FC = () => {
     window.location.href = '/login';
   };
 
-  // ===== СТАТУСЫ ДЛЯ ОТОБРАЖЕНИЯ =====
-  const statusOptions: { value: 'P' | 'N' | 'Б' | 'Оп'; label: string; color: string; title: string }[] = [
-    { value: 'P', label: 'П', color: '#27AE60', title: 'Присутствует' },
-    { value: 'N', label: 'Н', color: '#E74C3C', title: 'Неявка' },
+  // ===== СТАТУСЫ ДЛЯ ОТОБРАЖЕНИЯ (РУССКИЕ) =====
+  const statusOptions: { value: 'П' | 'Н' | 'Б' | 'Оп'; label: string; color: string; title: string }[] = [
+    { value: 'П', label: 'П', color: '#27AE60', title: 'Присутствует' },
+    { value: 'Н', label: 'Н', color: '#E74C3C', title: 'Неявка' },
     { value: 'Б', label: 'Б', color: '#F39C12', title: 'Болезнь' },
     { value: 'Оп', label: 'Оп', color: '#3498DB', title: 'Опоздал' },
   ];
 
   // ===== РЕНДЕР =====
-  // Показываем загрузку только если это первый рендер И данные ещё не загружены
   if (loading && isFirstRender.current) {
     return (
       <div className={styles.page}>
         <LipShapka userName={user?.fullName || 'Студент'} onLogout={handleLogout} />
-        <Spinner size="large" text="Загрузка дисциплины..." /> {/* ← НОВЫЙ СПИННЕР */}
+        <Spinner size="large" text="Загрузка дисциплины..." />
       </div>
     );
   }
 
-  // После первого рендера скрываем загрузку
   isFirstRender.current = false;
 
   return (
@@ -320,7 +348,10 @@ const DisciplinePage: React.FC = () => {
             )}
           </div>
 
-          <button className={styles.downloadButton}>
+          <button 
+            className={styles.downloadButton}
+            onClick={handleDownloadReport}
+          >
             📥 Скачать отчёт
           </button>
         </div>

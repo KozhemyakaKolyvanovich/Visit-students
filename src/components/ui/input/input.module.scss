@@ -1,32 +1,38 @@
+// src/components/ui/input/input.module.scss
+
 .input {
-    width: 100%;
-    max-width: 764px;
-    height: clamp(56px, 7vh, 80px);
-    padding: 0 20px;
-    font-size: clamp(18px, 2vw, 24px);
-    border: 2px solid var(--ramka);
-    border-radius: 12px;
-    outline: none;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    box-sizing: border-box;
-    background: var(--input);
-    color: var(--text);
-    font-family: var(--font-family-geologica);
-    flex-shrink: 0;
-  
-    &::placeholder {
-      color: var(--beh-text);
-      opacity: 0.7;
-    }
-  
-    &:focus {
-      border-color: var(--present);
-      box-shadow: 0 0 0 3px rgba(83, 215, 91, 0.3);
-    }
-  
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
+  width: 100%;
+  max-width: 764px;
+  height: clamp(64px, 8vh, 96px);
+  padding: 0 24px;
+  font-size: clamp(18px, 2vw, 24px);
+  border: 2px solid rgba(59, 130, 246, 0.15);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: rgba(15, 23, 42, 0.5);
+  color: #F8FAFC;
+  font-family: var(--font-family-geologica);
+  flex-shrink: 0;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.15);
+    font-weight: 300;
   }
+
+  &:focus {
+    border-color: #3B82F6;
+    box-shadow: 
+      0 0 30px rgba(59, 130, 246, 0.1),
+      0 0 60px rgba(59, 130, 246, 0.04),
+      inset 0 0 20px rgba(59, 130, 246, 0.03);
+    background: rgba(15, 23, 42, 0.7);
+    transform: scale(1.01);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -17,7 +17,7 @@ interface LoginProps {
 }
 
 const Login: React.FC<LoginProps> = ({ 
-  commentColor = 'var(--present)', 
+  commentColor = '#7DD3FC', // ← светло-голубой
   logo: logoProp 
 }) => {
   const [login, setLogin] = useState('');
@@ -65,7 +65,6 @@ const Login: React.FC<LoginProps> = ({
       const redirectPath = user.role === 'student' ? '/student' : '/teacher';
       console.log('📝 ШАГ 8: Перенаправление на:', redirectPath);
       
-      // Перенаправляем
       navigate(redirectPath);
       console.log('✅ ШАГ 9: navigate вызван');
       
@@ -101,7 +100,7 @@ const Login: React.FC<LoginProps> = ({
             type="text"
             value={login}
             onChange={(e) => setLogin(e.target.value)}
-            placeholder="Введите логин (1 или 2)"
+            placeholder="Введите логин"
             required
             disabled={loading}
           />
@@ -112,7 +111,7 @@ const Login: React.FC<LoginProps> = ({
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Введите пароль (1 или 2)"
+            placeholder="Введите пароль"
             required
             disabled={loading}
           />
@@ -122,6 +121,9 @@ const Login: React.FC<LoginProps> = ({
           {loading ? 'Загрузка...' : 'Войти'}
         </Button>
         
+        <div className={styles.footer}>
+          <span className={styles.footerText}></span>
+        </div>
       </form>
     </div>
   );

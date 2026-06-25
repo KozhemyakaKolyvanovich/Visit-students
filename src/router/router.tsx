@@ -4,8 +4,9 @@ import type { ReactNode } from 'react';
 import Login from '../components/pages/login/Login';
 import MainStudents from '../components/pages/mainStudents/mainStudents';
 import MainTeacher from '../components/pages/mainTeacher/mainTeacher';
-import GroupPage from '../components/pages/groupPage/gropePage'; // ← проверьте путь
-import DisciplinePage from '../../src/components/pages/disciplinePage/disciplinePage'; // ← ДОБАВИТЬ
+import GroupPage from '../components/pages/groupPage/gropePage';
+import DisciplinePage from '../../src/components/pages/disciplinePage/disciplinePage';
+import PollPage from '../components/pages/PollPage/PollPage'; // ← ДОБАВЛЕНО
 import { isAuthenticated, getUserRole } from '../utils/auth';
 
 interface ProtectedRouteProps {
@@ -81,6 +82,16 @@ export const Router = () => {
         element={
           <ProtectedRoute role="student">
             <DisciplinePage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* ===== СТРАНИЦА ОПРОСА (ДЛЯ СТУДЕНТА) ===== */}
+      <Route
+        path="/student/poll/:pollId"
+        element={
+          <ProtectedRoute role="student">
+            <PollPage />
           </ProtectedRoute>
         }
       />

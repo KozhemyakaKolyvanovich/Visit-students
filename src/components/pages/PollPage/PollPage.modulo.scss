@@ -1,0 +1,215 @@
+// src/components/pages/PollPage/PollPage.module.scss
+
+.page {
+  width: 100vw;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 30%, #0F172A 0%, #0A1628 50%, #050A14 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.card {
+  max-width: 500px;
+  width: 100%;
+  background: rgba(10, 22, 40, 0.85);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+  padding: 40px;
+  text-align: center;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #F8FAFC;
+  font-family: var(--font-family-geologica);
+  margin-bottom: 30px;
+}
+
+.info {
+  background: rgba(59, 130, 246, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.info p {
+  font-size: 18px;
+  color: #E2E8F0;
+  font-family: var(--font-family-geologica);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  color: #94A3B8;
+}
+
+.timeLeft {
+  font-weight: 700;
+  font-size: 22px;
+  color: #FCD34D;
+}
+
+.timeLeft.expired {
+  color: #EF4444;
+}
+
+.markButton {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: var(--font-family-geologica);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 24px rgba(59, 130, 246, 0.2);
+}
+
+.markButton:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 8px 40px rgba(59, 130, 246, 0.3);
+}
+
+.markButton:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.markButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.successMessage {
+  padding: 20px;
+}
+
+.successMessage h2 {
+  font-size: 28px;
+  color: #34D399;
+  margin-bottom: 10px;
+}
+
+.successMessage p {
+  font-size: 16px;
+  color: #94A3B8;
+}
+
+.expiredMessage {
+  padding: 20px;
+}
+
+.expiredMessage h2 {
+  font-size: 28px;
+  color: #EF4444;
+  margin-bottom: 10px;
+}
+
+.expiredMessage p {
+  font-size: 16px;
+  color: #94A3B8;
+  margin-bottom: 20px;
+}
+
+.errorContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.errorContainer h2 {
+  font-size: 28px;
+  color: #EF4444;
+  font-family: var(--font-family-geologica);
+}
+
+.goBackButton {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 8px;
+  color: #F8FAFC;
+  cursor: pointer;
+  font-family: var(--font-family-geologica);
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.goBackButton:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 20px;
+  }
+
+  .card {
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .info p {
+    font-size: 15px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .timeLeft {
+    font-size: 18px;
+  }
+
+  .markButton {
+    font-size: 17px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .info {
+    padding: 14px;
+  }
+
+  .info p {
+    font-size: 13px;
+  }
+
+  .timeLeft {
+    font-size: 16px;
+  }
+
+  .markButton {
+    font-size: 15px;
+    padding: 12px;
+  }
+}

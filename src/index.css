@@ -1,23 +1,52 @@
-/* Переменные */
-:root {
-  --white: #fff;
-  --fon: #673384;
-  --button: #E09303;
-  --ramka: #A890B0;
-  --text: #F0E8E6;
-  --fon-cart: #2B1F1A;
-  --beh-text: #897B6B;
-  --shadow: #0a07063b;
-  --late: #DEC019;
-  --present: #53D75B;
-  --no-show: #C83C34;
-  --plague: #568A53;
-  --input: #150F0D;
+/* src/index.css */
 
+:root {
+  /* ===== ЦВЕТА МИХАЭЛЯ КАЙЗЕРА (Blue Lock) ===== */
   
+  /* Основные цвета */
+  --primary-dark: #0A2463;      /* тёмно-синий */
+  --primary-main: #1E3A8A;      /* королевский синий */
+  --primary-light: #3B82F6;     /* яркий синий */
+  --primary-glow: rgba(59, 130, 246, 0.3);
   
+  /* Золотые акценты */
+  --gold-main: #FCD34D;         /* золотой */
+  --gold-light: #FBBF24;        /* тёплый жёлтый */
+  --gold-glow: rgba(252, 211, 77, 0.3);
+  
+  /* Текст */
+  --text-white: #F8FAFC;
+  --text-light: #E2E8F0;
+  --text-muted: #94A3B8;
+  
+  /* Фон */
+  --bg-dark: #0F172A;
+  --bg-card: #1E293B;
+  --bg-input: #0F172A;
+  
+  /* Рамки и тени */
+  --border-color: #3B82F6;
+  --shadow-color: rgba(59, 130, 246, 0.2);
+  
+  /* Семейство шрифтов */
   --font-family-geologica: geologica, arial, sans-serif;
+  
+  /* ===== СОВМЕСТИМОСТЬ СО СТАРЫМИ ПЕРЕМЕННЫМИ ===== */
+  --white: #F8FAFC;
+  --fon: #0A2463;
+  --button: #FCD34D;
+  --ramka: #3B82F6;
+  --text: #F8FAFC;
+  --fon-cart: #1E3A8A;
+  --beh-text: #94A3B8;
+  --shadow: rgba(59, 130, 246, 0.2);
+  --late: #FCD34D;
+  --present: #3B82F6;
+  --no-show: #EF4444;
+  --plague: #FCD34D;
+  --input: #0F172A;
 }
+
 @font-face {
   font-family: geologica;
   src: url('./assets/fonts/Geologica.ttf') format('truetype');
@@ -25,161 +54,95 @@
   font-style: normal;
   font-display: swap;
 }
-/* Базовый сброс стилей */
+
+/* ===== БАЗОВЫЙ СБРОС ===== */
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
-*::-webkit-scrollbar {
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-family-geologica);
+  background-color: var(--fon);
+  color: var(--text);
+  line-height: 1;
+}
+
+/* Стилизация скролла (синяя тема) */
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-*::-webkit-scrollbar-track {
-  background: var(--white);
-  border-radius: 12px; 
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+  border-radius: 12px;
 }
-*::-webkit-scrollbar-thumb {
-  background: var(--text);
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
   border-radius: 12px;
   cursor: pointer;
 }
-*::-webkit-scrollbar-thumb:hover {
-  background: var(--beh-text);
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-main);
 }
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+
+/* Остальные сбросы... */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption,
+tbody, tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output,
+ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
   vertical-align: baseline;
   color: inherit;
 }
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
   display: block;
 }
-html,
-body,
-#root {
-  height: 100%;
-  overflow: hidden;
-}
-body {
-  line-height: 1;
-  font-family: var(--font-family-geologica);
-  background-color: var(--secondary-background);
-  color: var(--text-black);
-}
-ol,
-ul {
+
+ol, ul {
   list-style: none;
 }
-blockquote,
-q {
+
+blockquote, q {
   quotes: none;
 }
-blockquote::before,
-blockquote::after,
-q::before,
-q::after {
+
+blockquote::before, blockquote::after,
+q::before, q::after {
   content: '';
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 a {
   text-decoration: none;
   color: inherit;
 }
+
 button {
   background: none;
   padding: 0;
@@ -188,68 +151,67 @@ button {
   color: inherit;
   outline: none;
   border: none;
-  &:focus-visible {
-      outline: none;
-  }
 }
+
+button:focus-visible {
+  outline: none;
+}
+
 svg {
   flex-shrink: 0;
 }
-input,
-textarea,
-select {
+
+input, textarea, select {
   font: inherit;
   outline: none;
 }
-input[type='search']::-webkit-search-cancel-button {
-  appearance: none;
-}
-input[type='search']::-webkit-search-decoration {
-  appearance: none;
-}
-input[type='search']::-moz-search-cancel-button {
-  appearance: none;
-}
+
 img {
   max-width: 100%;
   height: auto;
   display: block;
 }
+
+/* ===== ЗАГОЛОВКИ ===== */
 h1 {
-  /*28px-36px*/
   font-size: clamp(1.75rem, 1.6286rem + 0.5178vw, 2.25rem);
   line-height: normal;
-  font-weight: 500;
+  font-weight: 700;
+  color: var(--text-white);
 }
+
 h2 {
-  /*22px-26px*/
   font-size: clamp(1.375rem, 1.3143rem + 0.2589vw, 1.625rem);
-  /*26px-30px*/
   line-height: clamp(1.625rem, 1.5643rem + 0.2589vw, 1.875rem);
   font-weight: 600;
+  color: var(--text-white);
 }
+
 h3 {
-  /*18px-20px*/
   font-size: clamp(1.125rem, 1.0947rem + 0.1294vw, 1.25rem);
-  /*22px-24px*/
   line-height: clamp(1.375rem, 1.3447rem + 0.1294vw, 1.5rem);
   font-weight: 500;
+  color: var(--text-white);
 }
+
 .text-normal {
   font-size: 48px;
   line-height: normal;
   font-weight: 400;
 }
+
 .text-comment-title {
   font-size: 24px;
   line-height: normal;
   font-weight: 400;
 }
+
 .text-filled {
   font-size: 40px;
   line-height: normal;
   font-weight: 400;
 }
+
 .text-head {
   font-size: 96px;
   line-height: normal;

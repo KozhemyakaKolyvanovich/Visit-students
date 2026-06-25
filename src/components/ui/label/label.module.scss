@@ -1,13 +1,23 @@
-.label {
-    font-size: clamp(28px, 3vw, 42px);
-    font-weight: 500;
-    align-self: flex-start;
-    color: var(--text);
-    font-family: var(--font-family-geologica);
-    margin-bottom: 12px;
-    display: block;
+// src/components/ui/label/label.module.scss
 
-    &:not(:first-of-type) {
-      margin-top: 20px;    // ← увеличенный отступ между полями
-    }
-  }
+.label {
+  font-size: clamp(32px, 3vw, 42px);
+  font-weight: 500;
+  align-self: flex-start;
+  color: #F8FAFC;
+  font-family: var(--font-family-geologica);
+  margin-bottom: 8px;
+  display: block;
+  letter-spacing: 0.5px;
+  
+  // Голубое подчёркивание для акцента (опционально)
+  // &::after {
+  //   content: '';
+  //   display: block;
+  //   width: 40px;
+  //   height: 2px;
+  //   margin-top: 4px;
+  //   background: linear-gradient(90deg, #3B82F6, #60A5FA);
+  //   border-radius: 2px;
+  // }
+}

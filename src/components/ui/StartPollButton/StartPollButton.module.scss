@@ -1,0 +1,70 @@
+// src/components/ui/StartPollButton/StartPollButton.module.scss
+
+.startPollButton {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #1E3A8A, #3B82F6);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-family-geologica);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    white-space: nowrap;
+  
+    &:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.3);
+    }
+  
+    &:active:not(:disabled) {
+      transform: scale(0.96);
+    }
+  
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  
+    &.active {
+      background: linear-gradient(135deg, #DC2626, #EF4444);
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+      animation: pulseActive 2s ease-in-out infinite;
+  
+      &:hover {
+        box-shadow: 0 8px 30px rgba(239, 68, 68, 0.4);
+      }
+    }
+  }
+  
+  .defaultText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .activeText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: pulseText 1.5s ease-in-out infinite;
+  }
+  
+  .loadingText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  @keyframes pulseActive {
+    0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3); }
+    50% { box-shadow: 0 4px 40px rgba(239, 68, 68, 0.6); }
+  }
+  
+  @keyframes pulseText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }

@@ -207,7 +207,7 @@
     },
     {
       "id": "5",
-      "name": "Английский язык",
+      "name": "Jujutsu Kaisen (Modulo)",
       "groupId": 1
     },
     {
@@ -221,7 +221,7 @@
       "studentId": 1,
       "disciplineId": "1",
       "date": "2026-06-23",
-      "status": "P",
+      "status": "П",
       "reason": "",
       "id": "WQkx1n0TxTw"
     },
@@ -229,7 +229,7 @@
       "studentId": 2,
       "disciplineId": "1",
       "date": "2026-06-23",
-      "status": "P",
+      "status": "П",
       "reason": "",
       "id": "BhxguuINtwI"
     },
@@ -237,7 +237,7 @@
       "studentId": 3,
       "disciplineId": "1",
       "date": "2026-06-23",
-      "status": "N",
+      "status": "Н",
       "reason": "Семейные обстоятельства",
       "id": "QYjUs7Lp_as"
     },
@@ -245,7 +245,7 @@
       "studentId": 5,
       "disciplineId": "1",
       "date": "2026-06-23",
-      "status": "N",
+      "status": "Н",
       "reason": "",
       "id": "cWxpGG39pmg"
     },
@@ -285,15 +285,15 @@
       "studentId": 8,
       "disciplineId": "1",
       "date": "2026-06-24",
-      "status": "N",
-      "reason": "проебал пару в тик токе",
+      "status": "П",
+      "reason": "",
       "id": "iYcWO8OscgY"
     },
     {
       "studentId": 4,
       "disciplineId": "1",
       "date": "2026-06-24",
-      "status": "P",
+      "status": "П",
       "reason": "",
       "id": "nBvm6DkG4vg"
     },
@@ -328,6 +328,22 @@
       "status": "N",
       "reason": "прогулял",
       "id": "-fft5-jdvOA"
+    },
+    {
+      "studentId": 1,
+      "disciplineId": "1",
+      "date": "2026-06-25",
+      "status": "П",
+      "reason": "",
+      "id": "qFrhgm6Q3lQ"
+    },
+    {
+      "studentId": 2,
+      "disciplineId": "1",
+      "date": "2026-06-25",
+      "status": "Н",
+      "reason": "",
+      "id": "jtXXiP5z0IE"
     }
   ],
   "polls": [],

@@ -5,6 +5,9 @@ import LipShapka from '../../layout/LipShapka/LipShapka';
 import { getUser } from '../../../utils/auth';
 import styles from '../groupPage/gropePage.module.scss';
 import Spinner from '../../ui/Spinner/Spinner';
+import { generateGroupReport } from '../../../services/reportService';
+import StartPollButton from '../../../components/ui/StartPollButton/StartPollButton';
+import { createPoll, getActivePoll, autoClosePoll } from '../../../services/pollService';
 
 // ===== ТИПЫ =====
 interface Student {
@@ -24,7 +27,7 @@ interface AttendanceRecord {
   studentId: number;
   disciplineId: number;
   date: string;
-  status: 'P' | 'N' | 'Б' | 'Оп' | '';
+  status: 'П' | 'Н' | 'Б' | 'Оп' | ''; // ← ИСПРАВЛЕНО
   reason: string;
 }
 
@@ -56,6 +59,11 @@ const GroupPage: React.FC = () => {
   const [selectedWeek, setSelectedWeek] = useState<string>(getCurrentWeekStart());
   const [selectedMonth, setSelectedMonth] = useState<string>(new Date().toISOString().slice(0, 7));
 
+  // ===== СОСТОЯНИЯ ДЛЯ ОПРОСА =====
+  const [isPollActive, setIsPollActive] = useState(false);
+  const [isPollLoading, setIsPollLoading] = useState(false);
+  const [currentPollId, setCurrentPollId] = useState<string | null>(null);
+
   const tableRef = useRef<HTMLDivElement>(null);
 
   // ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
@@ -82,7 +90,6 @@ const GroupPage: React.FC = () => {
     });
   }
 
-  // ===== ДОБАВЛЯЕМ getWeekRange =====
   function getWeekRange(startDate: string): string {
     const start = new Date(startDate);
     const end = new Date(start);
@@ -161,6 +168,20 @@ const GroupPage: React.FC = () => {
         const attendanceData = await attendanceRes.json();
         setAttendance(attendanceData);
 
+        // ===== ПРОВЕРКА АКТИВНОГО ОПРОСА ПОСЛЕ ЗАГРУЗКИ =====
+        if (disciplinesData.length > 0) {
+          const activePoll = await getActivePoll(Number(groupId), disciplinesData[0].id);
+          if (activePoll) {
+            setIsPollActive(true);
+            setCurrentPollId(activePoll.id);
+            console.log('✅ Найден активный опрос после загрузки:', activePoll);
+          } else {
+            setIsPollActive(false);
+            setCurrentPollId(null);
+            console.log('❌ Активных опросов нет');
+          }
+        }
+
       } catch (error) {
         console.error('💥 Ошибка загрузки:', error);
       } finally {
@@ -171,8 +192,30 @@ const GroupPage: React.FC = () => {
     fetchData();
   }, [groupId]);
 
+  // ===== ПРОВЕРКА АКТИВНОГО ОПРОСА ПРИ ИЗМЕНЕНИИ ДИСЦИПЛИНЫ =====
+  useEffect(() => {
+    const checkActivePoll = async () => {
+      if (!group || !selectedDiscipline) return;
+      try {
+        const activePoll = await getActivePoll(group.id, selectedDiscipline);
+        if (activePoll) {
+          setIsPollActive(true);
+          setCurrentPollId(activePoll.id);
+          console.log('✅ Найден активный опрос:', activePoll);
+        } else {
+          setIsPollActive(false);
+          setCurrentPollId(null);
+          console.log('❌ Активных опросов нет');
+        }
+      } catch (error) {
+        console.error('Ошибка при проверке опроса:', error);
+      }
+    };
+    checkActivePoll();
+  }, [group, selectedDiscipline]);
+
   // ===== ОБНОВЛЕНИЕ СТАТУСА =====
-  const updateStatus = async (studentId: string, date: string, newStatus: 'P' | 'N' | 'Б' | 'Оп' | '') => {
+  const updateStatus = async (studentId: string, date: string, newStatus: 'П' | 'Н' | 'Б' | 'Оп' | '') => {
     if (!selectedDiscipline) return;
 
     const existing = getRecordForDate(studentId, date);
@@ -262,6 +305,87 @@ const GroupPage: React.FC = () => {
     }
   };
 
+  // ===== ФУНКЦИЯ СКАЧИВАНИЯ ОТЧЁТА ПО ГРУППЕ =====
+  const handleDownloadReport = async () => {
+    if (!group || students.length === 0 || !selectedDiscipline) {
+      alert('Данные для отчёта не загружены');
+      return;
+    }
+
+    const reportData = {
+      title: `Отчёт по группе: ${group.name}`,
+      disciplineName: disciplines.find(d => d.id === selectedDiscipline)?.name || 'Все дисциплины',
+      period: period === 'daily' ? `День: ${formatDate(selectedDate)}` :
+              period === 'weekly' ? `Неделя: ${getWeekRange(selectedWeek)}` :
+              `Месяц: ${formatMonth(selectedMonth)}`,
+      students: students.map((student) => ({
+        name: student.fullName,
+        statuses: dates.map(date => getStatusForDate(student.id, date)),
+        comments: dates.map(date => getReasonForDate(student.id, date)),
+      })),
+      dates: dates.map(date => formatDate(date)),
+    };
+
+    try {
+      await generateGroupReport(reportData);
+    } catch (error) {
+      console.error('Ошибка при скачивании отчёта:', error);
+      alert('Не удалось скачать отчёт. Попробуйте ещё раз.');
+    }
+  };
+
+  // ===== ФУНКЦИЯ ЗАПУСКА ОПРОСА =====
+  const handleStartPoll = async () => {
+    if (!group || !selectedDiscipline || !user) {
+      alert('Данные для запуска опроса не загружены');
+      return;
+    }
+
+    setIsPollLoading(true);
+
+    try {
+      const existingPoll = await getActivePoll(group.id, selectedDiscipline);
+      if (existingPoll) {
+        setIsPollActive(true);
+        setCurrentPollId(existingPoll.id);
+        alert('Опрос уже активен!');
+        setIsPollLoading(false);
+        return;
+      }
+
+      const newPoll = await createPoll(
+        selectedDiscipline,
+        Number(user.id),
+        group.id
+      );
+
+      setCurrentPollId(newPoll.id);
+      setIsPollActive(true);
+
+      setTimeout(async () => {
+        try {
+          await autoClosePoll(newPoll.id);
+          setIsPollActive(false);
+          setCurrentPollId(null);
+          const attendanceRes = await fetch('/api/attendance');
+          const attendanceData = await attendanceRes.json();
+          setAttendance(attendanceData);
+          alert('Опрос завершён! Неотметившимся студентам проставлена неявка.');
+        } catch (error) {
+          console.error('Ошибка при автоматическом завершении опроса:', error);
+        }
+      }, 5 * 60 * 1000);
+
+      alert('Опрос успешно запущен! Студенты могут отмечаться в течение 5 минут.');
+
+    } catch (error) {
+      console.error('Ошибка при запуске опроса:', error);
+      alert('Не удалось запустить опрос. Попробуйте ещё раз.');
+    } finally {
+      setIsPollLoading(false);
+    }
+  };
+
   // ===== ВЫХОД =====
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -270,10 +394,10 @@ const GroupPage: React.FC = () => {
     window.location.href = '/login';
   };
 
-  // ===== СТАТУСЫ ДЛЯ ОТОБРАЖЕНИЯ =====
-  const statusOptions: { value: 'P' | 'N' | 'Б' | 'Оп'; label: string; color: string; title: string }[] = [
-    { value: 'P', label: 'П', color: '#27AE60', title: 'Присутствует' },
-    { value: 'N', label: 'Н', color: '#E74C3C', title: 'Неявка' },
+  // ===== СТАТУСЫ ДЛЯ ОТОБРАЖЕНИЯ (РУССКИЕ) =====
+  const statusOptions: { value: 'П' | 'Н' | 'Б' | 'Оп'; label: string; color: string; title: string }[] = [
+    { value: 'П', label: 'П', color: '#27AE60', title: 'Присутствует' },
+    { value: 'Н', label: 'Н', color: '#E74C3C', title: 'Неявка' },
     { value: 'Б', label: 'Б', color: '#F39C12', title: 'Болезнь' },
     { value: 'Оп', label: 'Оп', color: '#3498DB', title: 'Опоздал' },
   ];
@@ -296,7 +420,7 @@ const GroupPage: React.FC = () => {
     return (
       <div className={styles.page}>
         <LipShapka userName={user?.fullName || 'Преподаватель'} onLogout={handleLogout} />
-        <Spinner size="large" text="Загрузка группы..." /> {/* ← НОВЫЙ СПИННЕР */}
+        <Spinner size="large" text="Загрузка группы..." />
       </div>
     );
   }
@@ -316,10 +440,17 @@ const GroupPage: React.FC = () => {
               ← Назад
             </button>
             <h1 className={styles.groupTitle}>Группа: {group?.name || 'Загрузка...'}</h1>
+            {isPollActive && currentPollId && (
+              <span className={styles.pollStatus}>
+                🟢 Опрос активен
+              </span>
+            )}
           </div>
-          <button className={styles.startPollButton}>
-            📊 Начать опрос
-          </button>
+          <StartPollButton
+            onStartPoll={handleStartPoll}
+            isPollActive={isPollActive}
+            isLoading={isPollLoading}
+          />
         </div>
 
         {/* ===== КНОПКИ ПЕРИОДОВ ===== */}
@@ -395,7 +526,10 @@ const GroupPage: React.FC = () => {
             </select>
           </div>
 
-          <button className={styles.downloadButton}>
+          <button 
+            className={styles.downloadButton}
+            onClick={handleDownloadReport}
+          >
             📥 Скачать отчёт
           </button>
         </div>
